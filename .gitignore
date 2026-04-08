@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Data storage (generated at runtime)
+data/storage/
+
+# Trained models (generated at runtime)
+models/
+
+# Live params_store (use .example template)
+store/params/params_store.json
+
+# Editor / OS artefacts
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

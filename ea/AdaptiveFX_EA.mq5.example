@@ -1,0 +1,197 @@
+//+------------------------------------------------------------------+
+//|  AdaptiveFX_EA.mq5  —  Example Template                         |
+//|                                                                  |
+//|  Receives trading signals from the Python AdaptiveFX system     |
+//|  via ZeroMQ PUB/SUB and executes orders with SL/TP on MT5.     |
+//|                                                                  |
+//|  IMPORTANT: This is an EXAMPLE / TEMPLATE file.                 |
+//|  Rename to AdaptiveFX_EA.mq5 and compile in MetaEditor.         |
+//|                                                                  |
+//|  Requirements:                                                   |
+//|  - ZeroMQ for MQL5 library: https://github.com/dingmaotu/mql-zmq|
+//|  - Copy ZMQ DLLs to MT5/Libraries folder                        |
+//+------------------------------------------------------------------+
+
+#property copyright "AdaptiveFX"
+#property version   "1.00"
+#property strict
+
+// Include ZeroMQ library (must be installed separately)
+// #include <Zmq/Zmq.mqh>
+
+//--- Input parameters
+input string   ZMQ_ADDRESS      = "tcp://localhost:5555"; // Python publisher address
+input string   ZMQ_TOPIC        = "SIGNAL";               // ZeroMQ topic to subscribe to
+input double   DEFAULT_LOT_SIZE = 0.01;                   // Fallback lot size if risk calc fails
+input int      MAGIC_NUMBER     = 20260406;               // EA magic number for order tracking
+input int      SLIPPAGE         = 10;                     // Max allowed slippage (points)
+input bool     ENABLE_TRADING   = false;                  // Safety switch — set to true to trade
+
+//--- Global variables
+// Context  g_context;
+// Socket   g_subscriber;
+bool     g_zmq_connected = false;
+datetime g_last_signal_time = 0;
+
+//+------------------------------------------------------------------+
+//| Expert initialisation                                            |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   Print("[AdaptiveFX] EA initialising...");
+   
+   if (!ENABLE_TRADING)
+   {
+      Print("[AdaptiveFX] WARNING: ENABLE_TRADING=false — no orders will be placed.");
+   }
+   
+   // TODO: Initialise ZeroMQ context and SUB socket
+   // g_context    = new Context();
+   // g_subscriber = new Socket(g_context, ZMQ_SUB);
+   // g_subscriber.connect(ZMQ_ADDRESS);
+   // g_subscriber.subscribe(ZMQ_TOPIC);
+   // g_zmq_connected = true;
+   // Print("[AdaptiveFX] ZeroMQ subscriber connected to: " + ZMQ_ADDRESS);
+   
+   Print("[AdaptiveFX] ZeroMQ not yet implemented — placeholder active.");
+   return INIT_SUCCEEDED;
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization                                          |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // TODO: Close ZeroMQ socket and context
+   // if (g_subscriber != NULL) { g_subscriber.disconnect(ZMQ_ADDRESS); delete g_subscriber; }
+   // if (g_context    != NULL) { delete g_context; }
+   Print("[AdaptiveFX] EA deinitialised. Reason: " + IntegerToString(reason));
+}
+
+//+------------------------------------------------------------------+
+//| Main tick handler — poll ZeroMQ for new signals                 |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   if (!g_zmq_connected) return;
+   
+   // TODO: Non-blocking poll for incoming ZeroMQ message
+   // ZmqMsg message;
+   // if (g_subscriber.recv(message, ZMQ_NOBLOCK))
+   // {
+   //    string raw = message.getData();
+   //    ProcessSignal(raw);
+   // }
+}
+
+//+------------------------------------------------------------------+
+//| Parse JSON signal and place order                                |
+//+------------------------------------------------------------------+
+void ProcessSignal(string raw_message)
+{
+   // TODO: Parse JSON payload from the raw ZeroMQ message
+   // Expected format: "SIGNAL {"symbol":"EURUSD","direction":"BUY",...}"
+   
+   // Strip the topic prefix
+   // string json = StringSubstr(raw_message, StringLen(ZMQ_TOPIC) + 1);
+   
+   // TODO: Extract fields from JSON (use a simple JSON parser or regex)
+   // string symbol    = ParseJsonString(json, "symbol");
+   // string direction = ParseJsonString(json, "direction");
+   // double sl        = ParseJsonDouble(json, "sl");
+   // double tp        = ParseJsonDouble(json, "tp");
+   // string strategy  = ParseJsonString(json, "strategy");
+   // string regime    = ParseJsonString(json, "regime");
+   
+   // Print("[AdaptiveFX] Signal received: " + symbol + " " + direction
+   //       + " SL=" + DoubleToString(sl, 5) + " TP=" + DoubleToString(tp, 5));
+   
+   // if (ENABLE_TRADING)
+   // {
+   //    PlaceOrder(symbol, direction, sl, tp, strategy + "|" + regime);
+   // }
+   
+   Print("[AdaptiveFX] ProcessSignal() not yet implemented.");
+}
+
+//+------------------------------------------------------------------+
+//| Place a market order with SL and TP                              |
+//+------------------------------------------------------------------+
+bool PlaceOrder(string symbol, string direction, double sl, double tp, string comment)
+{
+   // TODO: Implement MT5 order placement with error handling
+   
+   // ENUM_ORDER_TYPE order_type = (direction == "BUY")
+   //    ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+   // double price = (order_type == ORDER_TYPE_BUY)
+   //    ? SymbolInfoDouble(symbol, SYMBOL_ASK)
+   //    : SymbolInfoDouble(symbol, SYMBOL_BID);
+   
+   // MqlTradeRequest  request = {};
+   // MqlTradeResult   result  = {};
+   
+   // request.action    = TRADE_ACTION_DEAL;
+   // request.symbol    = symbol;
+   // request.volume    = DEFAULT_LOT_SIZE;
+   // request.type      = order_type;
+   // request.price     = price;
+   // request.sl        = sl;
+   // request.tp        = tp;
+   // request.deviation = SLIPPAGE;
+   // request.magic     = MAGIC_NUMBER;
+   // request.comment   = comment;
+   // request.type_filling = ORDER_FILLING_IOC;
+   
+   // if (!OrderSend(request, result))
+   // {
+   //    Print("[AdaptiveFX] OrderSend failed: retcode=" + IntegerToString(result.retcode)
+   //          + " (" + symbol + " " + direction + ")");
+   //    return false;
+   // }
+   
+   // Print("[AdaptiveFX] Order placed: ticket=" + IntegerToString(result.order)
+   //       + " " + symbol + " " + direction + " @ " + DoubleToString(result.price, 5));
+   // return true;
+   
+   Print("[AdaptiveFX] PlaceOrder() not yet implemented.");
+   return false;
+}
+
+//+------------------------------------------------------------------+
+//| Close an open position by ticket                                 |
+//+------------------------------------------------------------------+
+bool ClosePosition(ulong ticket)
+{
+   // TODO: Implement position close
+   // if (!PositionSelectByTicket(ticket)) return false;
+   // string  symbol      = PositionGetString(POSITION_SYMBOL);
+   // double  volume      = PositionGetDouble(POSITION_VOLUME);
+   // long    type        = PositionGetInteger(POSITION_TYPE);
+   // double  close_price = (type == POSITION_TYPE_BUY)
+   //    ? SymbolInfoDouble(symbol, SYMBOL_BID)
+   //    : SymbolInfoDouble(symbol, SYMBOL_ASK);
+   // ENUM_ORDER_TYPE close_type = (type == POSITION_TYPE_BUY)
+   //    ? ORDER_TYPE_SELL : ORDER_TYPE_BUY;
+   
+   // MqlTradeRequest request = {};
+   // MqlTradeResult  result  = {};
+   // request.action    = TRADE_ACTION_DEAL;
+   // request.position  = ticket;
+   // request.symbol    = symbol;
+   // request.volume    = volume;
+   // request.type      = close_type;
+   // request.price     = close_price;
+   // request.deviation = SLIPPAGE;
+   // request.magic     = MAGIC_NUMBER;
+   
+   // if (!OrderSend(request, result))
+   // {
+   //    Print("[AdaptiveFX] ClosePosition failed: " + IntegerToString(result.retcode));
+   //    return false;
+   // }
+   // Print("[AdaptiveFX] Position closed: ticket=" + IntegerToString(ticket));
+   // return true;
+   
+   Print("[AdaptiveFX] ClosePosition() not yet implemented.");
+   return false;
+}
